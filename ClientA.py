@@ -106,31 +106,6 @@ class TwitterClient(object):
             print("Error : " + str(e))
 
 
-# class TwitterClient2(object):
-#     def __init__(self):
-#         # keys and tokens from the Twitter Dev Console
-#         consumer_key = private.consumer_key
-#         consumer_secret = private.consumer_secret
-#         access_key = private.access_key
-#         access_secret = private.access_secret
-#
-#         try:
-#             # create OAuthHandler object
-#             self.auth = OAuthHandler(consumer_key, consumer_secret)
-#             # set access token and secret
-#             self.auth.set_access_token(access_key, access_secret)
-#             # create tweepy API object to fetch tweets
-#             self.api = tweepy.API(self.auth)
-#         except:
-#             print("Error: Authentication Failed")
-#
-#         def clean_tweet(self, tweet):
-#             '''
-#             Utility function to clean tweet text by removing links, special characters
-#             using simple regex statements.
-#             '''
-#             return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
-
 global Topic1
 global Topic2
 
@@ -201,7 +176,8 @@ def main2():
     negative2 = (" Negative tweets percentage: {} %".format(100 * len(ntweets2) / len(tweets2)))
 
     neutweets2 = [tweet for tweet in tweets2 if tweet['sentiment'] == 'neutral']
-    print("Neutral tweets percentage: {} % \ ".format(100 * (len(tweets2) - (len(ntweets2) + len(ptweets2))) / len(tweets2)))
+    print("Neutral tweets percentage: {} % \ ".format(
+        100 * (len(tweets2) - (len(ntweets2) + len(ptweets2))) / len(tweets2)))
     neutral2 = ("Neutral tweets percentage: {} % \ ".format(100 * len(neutweets2) / len(tweets2)))
 
     print("\n\nPositive tweets:")
@@ -234,9 +210,9 @@ def process():
             errors += "<p>{!r} is not a string.</p>\n".format(request.form["Topic2"])
 
         print(Topic1)
-        #time.sleep(5)
+        # time.sleep(5)
         print(Topic2)
-        #time.sleep(5)
+        # time.sleep(5)
         return render_template('middle.html', Topic1=Topic1, Topic2=Topic2)
 
     return 'Only access through POST request'
@@ -245,7 +221,7 @@ def process():
 @app.route('/endpoint', methods=['POST', 'GET'])
 def process2():
     if request.method == 'POST':
-        #time.sleep(7.5)
+        # time.sleep(7.5)
         return render_template('endpoint.html', Topic1=Topic1, Topic2=Topic2, tweets=tweets,
                                ptweets=ptweets, ntweets=ntweets, neutweets=neutweets,
                                positive=positive, negative=negative, neutral=neutral,
@@ -317,6 +293,22 @@ def Button2():
 
     # function to show the plot
     plt.show()
+
+
+@app.route('/graph')
+def graph(chartID='chart_ID', chart_type='line', chart_height=500):
+    chart = {"renderTo": chartID, "type": chart_type, "height": chart_height, }
+    series = [{"name": 'Label1', "data": [1, 2, 3, 3, 3.5, 4, 2.25]}, {"name": 'Label2', "data": [4, 5, 6]}]
+    title = {"text": 'My Title'}
+    xAxis = {"categories": ['xAxis Data1', 'xAxis Data2', 'xAxis Data3']}
+    yAxis = {"title": {"text": 'yAxis Label'}}
+    return render_template('endpoint.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis,
+                           yAxis=yAxis, Topic1=Topic1, Topic2=Topic2, tweets=tweets,
+                           ptweets=ptweets, ntweets=ntweets, neutweets=neutweets,
+                           positive=positive, negative=negative, neutral=neutral,
+                           tweets2=tweets2,
+                           ptweets2=ptweets2, ntweets2=ntweets2, neutweets2=neutweets2,
+                           positive2=positive2, negative2=negative2, neutral2=neutral2)
 
 
 if __name__ == '__main__':
