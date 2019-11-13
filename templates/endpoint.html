@@ -12,30 +12,7 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="../static/graph.js"></script>
     <script type=text/javascript>
-    $(function() {
-        $("#mybutton1").click(function (event) {
-            $.getJSON('/Button1', { },
-            function(data) { });
-            return false;
-         });
-     });
-
-
-    $(function() {
-        $("#mybutton2").click(function (event) {
-            $.getJSON('/Button2', { },
-            function(data) { });
-            return false;
-         });
-     });
-
-    $(function() {
-        $("#mybutton3").click(function (event) {
-            $.getJSON('/Graph', { },
-            function(data) { });
-            return false;
-         });
-     });</script>
+</script>
 <p>
     {{positive}}
     <br>
@@ -146,7 +123,6 @@
     </table>
 </div>
 <br>
-<input type = "button" id = "mybutton1" value = "Click Here to see PiChart" /><br>
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <h1>{{ Topic2 }}</h1>
 <p>
@@ -258,8 +234,7 @@
     </table>
 </div>
 <br>
-<input type = "button" id = "mybutton2" value = "Click Here to see PiChart" />
-<input type = "button" id = "mybutton3" value = "Click Here to see Graph" />
+<input type="submit" name="submit_button" value="Show Topic1 Sentiment Graph">
 <br>
 <div id={{ chartID|safe }} class="chart" style="height: 500px; width: 500px"></div>
 		<script>

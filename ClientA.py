@@ -153,8 +153,10 @@ def main():
         print(tweet['text'])
         # print(tweet['user'])
 
-    # for tweet in ptweets[:10]:
-    #     PtweetsFolList = [int(tweet['user_followers'])]
+
+    #Take the followers value from each tweet in the positive tweets and place them into a list.
+    PtweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'positive']
+    print(PtweetsFolList2)
 
     return Topic1, tweets, ptweets, ntweets, neutweets, positive, negative, neutral  # , PtweetsFolList
 
@@ -187,6 +189,14 @@ def main2():
     print("\n\nNegative tweets:")
     for tweet in ntweets2[:10]:
         print(tweet['text'])
+
+    for tweet in ptweets2[:10]:
+        print(tweet['user_followers'])
+
+
+
+    PtweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'positive']
+    print(PtweetsFolList2)
 
     return Topic2, tweets2, ptweets2, ntweets2, neutweets2, positive2, negative2, neutral2
 
@@ -264,35 +274,35 @@ def Button1():
     plt.show()
 
 
-@app.route('/Button2')
-def Button2():
-    global tweets2
-    global ptweets2
-    global ntweets2
-    global neutweets2
-
-    # x-coordinates of left sides of bars
-    left = [1, 2, 3]
-
-    # heights of bars
-    height = [len(ptweets2), len(ntweets2), len(neutweets2)]
-
-    # labels for bars
-    tick_label = ['positive', 'negative', 'neutral']
-
-    # plotting a bar chart
-    plt.bar(left, height, tick_label=tick_label,
-            width=0.8, color=['red', 'green'])
-
-    # naming the x-axis
-    plt.xlabel('x - axis')
-    # naming the y-axis
-    plt.ylabel('y - axis')
-    # plot title
-    plt.title('Bar chart for ' + Topic2 + ' Tweets!')
-
-    # function to show the plot
-    plt.show()
+# @app.route('/Button2')
+# def Button2():
+#     global tweets2
+#     global ptweets2
+#     global ntweets2
+#     global neutweets2
+#
+#     # x-coordinates of left sides of bars
+#     left = [1, 2, 3]
+#
+#     # heights of bars
+#     height = [len(ptweets2), len(ntweets2), len(neutweets2)]
+#
+#     # labels for bars
+#     tick_label = ['positive', 'negative', 'neutral']
+#
+#     # plotting a bar chart
+#     plt.bar(left, height, tick_label=tick_label,
+#             width=0.8, color=['red', 'green'])
+#
+#     # naming the x-axis
+#     plt.xlabel('x - axis')
+#     # naming the y-axis
+#     plt.ylabel('y - axis')
+#     # plot title
+#     plt.title('Bar chart for ' + Topic2 + ' Tweets!')
+#
+#     # function to show the plot
+#     plt.show()
 
 
 @app.route('/graph')
