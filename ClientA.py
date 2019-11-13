@@ -120,7 +120,8 @@ def main():
     api = TwitterClient()
     global Topic1, tweets, ptweets, ntweets, neutweets, \
         positive, negative, neutral, \
-        PtweetsAvg, PtweetsFolList
+        PtweetsAvg, pTweetsFolList, nTweetsFolList, \
+        neuTweetsFolList, topic1RTList
     # calling function to get tweets
     tweets = api.get_tweets(query=Topic1, count=200)
 
@@ -153,19 +154,34 @@ def main():
         print(tweet['text'])
         # print(tweet['user'])
 
+    # Take the followers value from each tweet in the positive tweets and place them into a list.
+    pTweetsFolList = [tweet['user_followers'] for tweet in tweets if tweet['sentiment'] == 'positive']
+    nTweetsFolList = [tweet['user_followers'] for tweet in tweets if tweet['sentiment'] == 'negative']
+    neuTweetsFolList = [tweet['user_followers'] for tweet in tweets if tweet['sentiment'] == 'neutral']
+    topic1FolList = [tweet['user_followers'] for tweet in tweets]  # This list can be used for totals/averages
 
-    #Take the followers value from each tweet in the positive tweets and place them into a list.
-    PtweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'positive']
-    print(PtweetsFolList2)
+    # Take the retweets value from each tweet in the positive tweets and place them into a list.
+    pTweetsRTList = [tweet['user_followers'] for tweet in tweets if tweet['sentiment'] == 'positive']
+    nTweetsRTList = [tweet['user_followers'] for tweet in tweets if tweet['sentiment'] == 'negative']
+    neuTweetsRTList = [tweet['user_followers'] for tweet in tweets if tweet['sentiment'] == 'neutral']
+    topic1RTList = [tweet['rt_count'] for tweet in tweets]  # This list can be used for totals/averages
 
-    return Topic1, tweets, ptweets, ntweets, neutweets, positive, negative, neutral  # , PtweetsFolList
+    # Take the verfified? boolean value from each tweet in the positive tweets and place them into a list. SCATTER PLOT
+    pTweetsVerList = [tweet['user_verified'] for tweet in tweets if tweet['sentiment'] == 'positive']
+    nTweetsVerList = [tweet['user_verified'] for tweet in tweets if tweet['sentiment'] == 'negative']
+    neuTweetsVerList = [tweet['user_verified'] for tweet in tweets if tweet['sentiment'] == 'neutral']
+    topic1VerList = [tweet['user_verified'] for tweet in tweets]  # This list can be used for totals/averages
+
+    return Topic1, tweets, ptweets, ntweets, neutweets, positive, negative, neutral, \
+           pTweetsFolList, nTweetsFolList, neuTweetsFolList, topic1FolList, pTweetsRTList, \
+           nTweetsRTList, neuTweetsRTList, topic1RTList
 
 
 def main2():
     api = TwitterClient()
     global Topic2, tweets2, ptweets2, ntweets2, neutweets2, \
         positive2, negative2, neutral2, \
-        PtweetsAvg2, PtweetsFolList2
+        PtweetsAvg2, PtweetsFolList2, topic2RTList
 
     tweets2 = api.get_tweets(query=Topic2, count=200)
 
@@ -190,15 +206,22 @@ def main2():
     for tweet in ntweets2[:10]:
         print(tweet['text'])
 
-    for tweet in ptweets2[:10]:
-        print(tweet['user_followers'])
-
-
+    # for tweet in ptweets2[:10]:
+    #     print(tweet['user_followers'])
 
     PtweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'positive']
-    print(PtweetsFolList2)
+    nTweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'negative']
+    neuTweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'neutral']
+    topic2FolList = [tweet['user_followers'] for tweet in tweets2]  # This list can be used for totals/averages
 
-    return Topic2, tweets2, ptweets2, ntweets2, neutweets2, positive2, negative2, neutral2
+    pTweetsRTList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'positive']
+    nTweetsRTList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'negative']
+    neuTweetsRTList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'neutral']
+    topic2RTList = [tweet['rt_count'] for tweet in tweets2]  # This list can be used for totals/averages
+
+    return Topic2, tweets2, ptweets2, ntweets2, neutweets2, positive2, negative2, neutral2, \
+           PtweetsFolList2, nTweetsFolList2, neuTweetsFolList2, topic2FolList, pTweetsRTList2, \
+           nTweetsRTList2, neuTweetsRTList2, topic2RTList
 
 
 @app.route('/middle', methods=['POST', 'GET'])
@@ -232,13 +255,15 @@ def process():
 def process2():
     if request.method == 'POST':
         # time.sleep(7.5)
+        graph()
         return render_template('endpoint.html', Topic1=Topic1, Topic2=Topic2, tweets=tweets,
                                ptweets=ptweets, ntweets=ntweets, neutweets=neutweets,
                                positive=positive, negative=negative, neutral=neutral,
-                               tweets2=tweets2,
+                               tweets2=tweets2, pTweetsFolList=pTweetsFolList,
+                               nTweetsFolList=nTweetsFolList, neuTweetsFolList=neuTweetsFolList,
+                               topic2RTList=topic2RTList, topic1RTList=topic1RTList,
                                ptweets2=ptweets2, ntweets2=ntweets2, neutweets2=neutweets2,
-                               positive2=positive2, negative2=negative2, neutral2=neutral2
-                               )
+                               positive2=positive2, negative2=negative2, neutral2=neutral2)
 
     return 'Only accessible through POST method'
 
@@ -305,20 +330,55 @@ def Button1():
 #     plt.show()
 
 
-@app.route('/graph')
+#@app.route('/graph')
 def graph(chartID='chart_ID', chart_type='line', chart_height=500):
+    global pTweetsFolList, nTweetsFolList
     chart = {"renderTo": chartID, "type": chart_type, "height": chart_height, }
-    series = [{"name": 'Label1', "data": [1, 2, 3, 3, 3.5, 4, 2.25]}, {"name": 'Label2', "data": [4, 5, 6]}]
-    title = {"text": 'My Title'}
-    xAxis = {"categories": ['xAxis Data1', 'xAxis Data2', 'xAxis Data3']}
-    yAxis = {"title": {"text": 'yAxis Label'}}
+    series = [{"name": 'PtweetsFollowersCount', "data": [pTweetsFolList[0], pTweetsFolList[1], pTweetsFolList[2],
+                                                         pTweetsFolList[3], pTweetsFolList[4], pTweetsFolList[5],
+                                                         pTweetsFolList[6]]},
+              {"name": 'NtweetsFollowersCount', "data": [nTweetsFolList[0], nTweetsFolList[1], nTweetsFolList[2],
+                                                         nTweetsFolList[3], nTweetsFolList[4], nTweetsFolList[5],
+                                                         nTweetsFolList[6]]},
+              {"name": 'NeutweetsFollowersCount',
+               "data": [neuTweetsFolList[0], neuTweetsFolList[1], neuTweetsFolList[2],
+                        neuTweetsFolList[3], neuTweetsFolList[4], neuTweetsFolList[5],
+                        neuTweetsFolList[6]]}]
+    title = {"text": 'Follower Counts Per Sentiment - ' + Topic1}
+    xAxis = {"categories": ['Tweet 1', 'Tweet 2', 'Tweet 3', 'Tweet 4', 'Tweet 5', 'Tweet 6', 'Tweet 7']}
+    yAxis = {"title": {"text": 'Followers'}}
     return render_template('endpoint.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis,
                            yAxis=yAxis, Topic1=Topic1, Topic2=Topic2, tweets=tweets,
                            ptweets=ptweets, ntweets=ntweets, neutweets=neutweets,
                            positive=positive, negative=negative, neutral=neutral,
                            tweets2=tweets2,
                            ptweets2=ptweets2, ntweets2=ntweets2, neutweets2=neutweets2,
-                           positive2=positive2, negative2=negative2, neutral2=neutral2)
+                           positive2=positive2, negative2=negative2, neutral2=neutral2,
+                           pTweetsFolList=pTweetsFolList, nTweetsFolList=nTweetsFolList,
+                           neuTweetsFolList=neuTweetsFolList)
+
+
+@app.route('/graph2')
+def graph2(chartID='chart_ID2', chart_type='line', chart_height=500):
+    global topic1RTList, topic2RTList
+    chart = {"renderTo": chartID, "type": chart_type, "height": chart_height, }
+    series = [{"name": 'topic1RTList', "data": [topic1RTList[0], topic1RTList[1], topic1RTList[2],
+                                                topic1RTList[3], topic1RTList[4], topic1RTList[5],
+                                                topic1RTList[6]]},
+              {"name": 'topic1RTList', "data": [topic2RTList[0], topic2RTList[1], topic2RTList[2],
+                                                 topic2RTList[3], topic2RTList[4], topic2RTList[5],
+                                                 topic2RTList[6]]}]
+    title = {"text": 'Retweet Counts Per Topic - ' + Topic1 + "&" + Topic2}
+    xAxis = {"categories": ['Tweet 1', 'Tweet 2', 'Tweet 3', 'Tweet 4', 'Tweet 5', 'Tweet 6', 'Tweet 7']}
+    yAxis = {"title": {"text": 'Followers'}}
+    return render_template('endpoint.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis,
+                           yAxis=yAxis, Topic1=Topic1, Topic2=Topic2, tweets=tweets,
+                           ptweets=ptweets, ntweets=ntweets, neutweets=neutweets,
+                           positive=positive, negative=negative, neutral=neutral,
+                           tweets2=tweets2,
+                           ptweets2=ptweets2, ntweets2=ntweets2, neutweets2=neutweets2,
+                           positive2=positive2, negative2=negative2, neutral2=neutral2,
+                           topic1RTList=topic1RTList, topic2RTList=topic2RTList)
 
 
 if __name__ == '__main__':

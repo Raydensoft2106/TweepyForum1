@@ -234,16 +234,25 @@
     </table>
 </div>
 <br>
-<input type="submit" name="submit_button" value="Show Topic1 Sentiment Graph">
+<form action="/graph">
+    <input type="submit" name="submit_button" value="Show Followers Graph">
+</form>
+<form action="/graph2">
+    <input type="submit" name="submit_button" value="Show Retweets Graph">
+</form>
 <br>
 <div id={{ chartID|safe }} class="chart" style="height: 500px; width: 500px"></div>
+<div id={{ chartID2|safe }} class="chart" style="height: 500px; width: 500px"></div>
 		<script>
 			var chart_id = {{ chartID|safe }}
+			var chart_id2 = {{ chartID|safe }}
 			var series = {{ series|safe }}
 			var title = {{ title|safe }}
 			var xAxis = {{ xAxis|safe }}
 			var yAxis = {{ yAxis|safe }}
 			var chart = {{ chart|safe }}
+
+
 		</script>
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 </body>
