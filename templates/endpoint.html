@@ -235,17 +235,22 @@
 </div>
 <br>
 <form action="/graph">
-    <input type="submit" name="submit_button" value="Show Followers Graph">
+    <input type="submit" name="submit_button" value="Show Followers Graph Below">
 </form>
 <form action="/graph2">
-    <input type="submit" name="submit_button" value="Show Retweets Graph">
+    <input type="submit" name="submit_button" value="Show Retweets Graph Below">
+</form>
+<form action="/avgPlot">
+    <input type="submit" name="submit_button" value="Show Verified? Scatterplot">
 </form>
 <br>
-<div id={{ chartID|safe }} class="chart" style="height: 500px; width: 500px"></div>
-<div id={{ chartID2|safe }} class="chart" style="height: 500px; width: 500px"></div>
+<div id={{ chartID|safe }} class="chart" style="height: 500px; width: 750px"></div>
+<div id={{ chartID2|safe }} class="chart" style="height: 500px; width: 750px"></div>
+<div id={{ chartID3|safe }} class="chart" style="height: 500px; width: 750px"></div>
 		<script>
 			var chart_id = {{ chartID|safe }}
 			var chart_id2 = {{ chartID|safe }}
+			var chart_id3 = {{ chartID|safe }}
 			var series = {{ series|safe }}
 			var title = {{ title|safe }}
 			var xAxis = {{ xAxis|safe }}
