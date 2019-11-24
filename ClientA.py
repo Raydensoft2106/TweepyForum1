@@ -1,9 +1,6 @@
 import re
-
-import matplotlib
 import tweepy
 from flask import Flask, render_template, request
-from jedi.refactoring import inline
 from tweepy import OAuthHandler
 from textblob import TextBlob
 import private
@@ -213,9 +210,6 @@ def main2():
     for tweet in ntweets2[:10]:
         print(tweet['text'])
 
-    # for tweet in ptweets2[:10]:
-    #     print(tweet['user_followers'])
-
     PtweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'positive']
     nTweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'negative']
     neuTweetsFolList2 = [tweet['user_followers'] for tweet in tweets2 if tweet['sentiment'] == 'neutral']
@@ -398,16 +392,6 @@ def graph2(chartID='chart_ID2', chart_type='line', chart_height=500):
 @app.route('/scatterplot1')
 def scatterplot1():  # chartID='chart_ID3', chart_type='scatter', chart_height=500):
     global topic1StatusesList, topic1FolList, topic1StatusesListNV
-    # girls_grades = [89, 90, 70, 89, 100, 80, 90, 100, 80, 34]
-    # boys_grades = [30, 29, 49, 48, 100, 48, 38, 45, 20, 30]
-    # grades_range = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    # plt.scatter(grades_range, girls_grades, color='r')
-    # plt.scatter(grades_range, boys_grades, color='g')
-    # plt.xlabel('Grades Range')
-    # plt.ylabel('Grades Scored')
-
-    # girls_grades = [89, 90, 70, 89, 100, 80, 90, 100, 80, 34]
-    # boys_grades = [30, 29, 49, 48, 100, 48, 38, 45, 20, 30]
     followers_range = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
     plt.scatter(followers_range, topic1StatusesList[:, 0], color='r')
     plt.scatter(followers_range, topic1StatusesListNV[:, 0], color='g')
@@ -415,90 +399,6 @@ def scatterplot1():  # chartID='chart_ID3', chart_type='scatter', chart_height=5
     plt.ylabel('Followers')
     plt.show()
 
-
-#     chart = {"renderTo": chartID, "type": chart_type, "height": chart_height, }
-#     series = [{"name": 'topic1RTList', "data": [topic1RTList[0], topic1RTList[1], topic1RTList[2],
-#                                                 topic1RTList[3], topic1RTList[4], topic1RTList[5],
-#                                                 topic1RTList[6], topic1RTList[7], topic1RTList[8],
-#                                                 topic1RTList[9], topic1RTList[10], topic1RTList[11],
-#                                                 topic1RTList[12], topic1RTList[13], topic1RTList[14],
-#                                                 topic1RTList[15], topic1RTList[16], topic1RTList[17],
-#                                                 topic1RTList[18], topic1RTList[19], topic1RTList[20],
-#                                                 topic1RTList[21], topic1RTList[22], topic1RTList[23],
-#                                                 topic1RTList[24], topic1RTList[25], topic1RTList[26],
-#                                                 topic1RTList[27], topic1RTList[28], topic1RTList[29],
-#                                                 topic1RTList[30], topic1RTList[31], topic1RTList[32],
-#                                                 topic1RTList[33], topic1RTList[34], topic1RTList[35],
-#                                                 topic1RTList[36], topic1RTList[37], topic1RTList[38],
-#                                                 topic1RTList[39], topic1RTList[40], topic1RTList[14],
-#                                                 topic1RTList[42], topic1RTList[43], topic1RTList[44],
-#                                                 topic1RTList[45], topic1RTList[46], topic1RTList[47],
-#                                                 topic1RTList[48], topic1RTList[49], topic1RTList[50],
-#                                                 topic1RTList[51], topic1RTList[52], topic1RTList[53],
-#                                                 topic1RTList[54], topic1RTList[55], topic1RTList[56],
-#                                                 topic1RTList[57], topic1RTList[58], topic1RTList[59],
-#                                                 topic1RTList[60], topic1RTList[61], topic1RTList[62],
-#                                                 topic1RTList[63], topic1RTList[64], topic1RTList[65],
-#                                                 topic1RTList[66], topic1RTList[67], topic1RTList[68],
-#                                                 topic1RTList[69], topic1RTList[70], topic1RTList[71],
-#                                                 topic1RTList[72], topic1RTList[73], topic1RTList[74],
-#                                                 topic1RTList[75], topic1RTList[76], topic1RTList[77],
-#                                                 topic1RTList[78], topic1RTList[79], topic1RTList[80],
-#                                                 topic1RTList[81], topic1RTList[82], topic1RTList[83],
-#                                                 topic1RTList[84], topic1RTList[85], topic1RTList[86],
-#                                                 topic1RTList[87], topic1RTList[88], topic1RTList[89],
-#                                                 topic1RTList[90], topic1RTList[91], topic1RTList[92],
-#                                                 topic1RTList[93], topic1RTList[94], topic1RTList[95],
-#                                                 topic1RTList[96], topic1RTList[97], topic1RTList[98],
-#                                                 topic1RTList[99]]},
-#               {"name": 'topic1RTList', "data": [topic2RTList[0], topic2RTList[1], topic2RTList[2],
-#                                                 topic2RTList[3], topic2RTList[4], topic2RTList[5],
-#                                                 topic2RTList[6], topic2RTList[7], topic2RTList[8],
-#                                                 topic2RTList[9], topic2RTList[10], topic2RTList[11],
-#                                                 topic2RTList[12], topic2RTList[13], topic2RTList[14],
-#                                                 topic2RTList[15], topic2RTList[16], topic2RTList[17],
-#                                                 topic2RTList[18], topic2RTList[19], topic2RTList[20],
-#                                                 topic2RTList[21], topic2RTList[22], topic2RTList[23],
-#                                                 topic2RTList[24], topic2RTList[25], topic2RTList[26],
-#                                                 topic2RTList[27], topic2RTList[28], topic2RTList[29],
-#                                                 topic2RTList[30], topic2RTList[31], topic2RTList[32],
-#                                                 topic2RTList[33], topic2RTList[34], topic2RTList[35],
-#                                                 topic2RTList[36], topic2RTList[37], topic2RTList[38],
-#                                                 topic2RTList[39], topic2RTList[40], topic2RTList[14],
-#                                                 topic2RTList[42], topic2RTList[43], topic2RTList[44],
-#                                                 topic2RTList[45], topic2RTList[46], topic2RTList[47],
-#                                                 topic2RTList[48], topic2RTList[49], topic2RTList[50],
-#                                                 topic2RTList[51], topic2RTList[52], topic2RTList[53],
-#                                                 topic2RTList[54], topic2RTList[55], topic2RTList[56],
-#                                                 topic2RTList[57], topic2RTList[58], topic2RTList[59],
-#                                                 topic2RTList[60], topic2RTList[61], topic2RTList[62],
-#                                                 topic2RTList[63], topic2RTList[64], topic2RTList[65],
-#                                                 topic2RTList[66], topic2RTList[67], topic2RTList[68],
-#                                                 topic2RTList[69], topic2RTList[70], topic2RTList[71],
-#                                                 topic2RTList[72], topic2RTList[73], topic2RTList[74],
-#                                                 topic2RTList[75], topic2RTList[76], topic2RTList[77],
-#                                                 topic2RTList[78], topic2RTList[79], topic2RTList[80],
-#                                                 topic2RTList[81], topic2RTList[82], topic2RTList[83],
-#                                                 topic2RTList[84], topic2RTList[85], topic2RTList[86],
-#                                                 topic2RTList[87], topic2RTList[88], topic2RTList[89],
-#                                                 topic2RTList[90], topic2RTList[91], topic2RTList[92],
-#                                                 topic2RTList[93], topic2RTList[94], topic2RTList[95],
-#                                                 topic2RTList[96], topic2RTList[97], topic2RTList[98],
-#                                                 topic2RTList[99]]}]
-#     title = {"text": 'Statuses vs Followers & Verified? Topic - ' + Topic1}
-#     xAxis = {"categories": ['Tweet 1', 'Tweet 2', 'Tweet 3', 'Tweet 4', 'Tweet 5', 'Tweet 6', 'Tweet 7', 'Tweet 8',
-#                             'Tweet 9', 'Tweet 10',
-#                             'Tweet 11', 'Tweet 12', 'Tweet 13', 'Tweet 14', 'Tweet 15', 'Tweet 16', 'Tweet 17',
-#                             'Tweet 18', 'Tweet 19', 'Tweet 20']}
-#     yAxis = {"title": {"text": 'Followers'}}
-#     return render_template('endpoint.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis,
-#                            yAxis=yAxis, Topic1=Topic1, Topic2=Topic2, tweets=tweets,
-#                            ptweets=ptweets, ntweets=ntweets, neutweets=neutweets,
-#                            positive=positive, negative=negative, neutral=neutral,
-#                            tweets2=tweets2,
-#                            ptweets2=ptweets2, ntweets2=ntweets2, neutweets2=neutweets2,
-#                            positive2=positive2, negative2=negative2, neutral2=neutral2,
-#                            topic1RTList=topic1RTList, topic2RTList=topic2RTList)
 
 def Average(lst):
     return sum(lst) / len(lst)
