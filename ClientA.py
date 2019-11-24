@@ -4,6 +4,9 @@ from flask import Flask, render_template, request
 from tweepy import OAuthHandler
 from textblob import TextBlob
 import private
+
+import matplotlib
+
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 
@@ -408,19 +411,17 @@ def Average(lst):
 def avgPlot():
     global topic1FolList, topic2FolList, topic1RTList, topic2RTList
     figure(num=None, figsize=(65, 6), dpi=80, facecolor='w', edgecolor='k')
-    x = ['Average Topic1 Tweets Followers', 'Average Topic2 Tweets Folowers', 'Average Topic1 User Retweets',
-         'Average Topic2 User Retweets']
+    x = ['Average '+Topic1+' Tweets Followers', 'Average Topic2 '+Topic2+' Tweets Folowers', 'Average '+Topic1+' User Retweets',
+         'Average '+Topic2+' User Retweets']
     averages = [Average(topic1FolList), Average(topic2FolList), Average(topic1RTList), Average(topic2RTList)]
 
     x_pos = [i for i, _ in enumerate(x)]
 
     plt.bar(x_pos, averages, color='green')
-    plt.xlabel(Topic1 + " " + Topic2)
+    plt.xlabel(Topic1 + " & " + Topic2 + "Drill-down")
     plt.ylabel("Followers (1 & 2), Retweets (3 & 4)")
     plt.title("Average number of followers and retweets")
-
     plt.xticks(x_pos, x)
-
     plt.show()
 
     return render_template('endpoint.html', Topic1=Topic1, Topic2=Topic2, tweets=tweets,
