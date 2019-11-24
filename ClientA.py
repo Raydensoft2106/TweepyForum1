@@ -10,7 +10,6 @@ import private
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 
-
 plt.style.use('ggplot')
 
 app = Flask(__name__)
@@ -292,6 +291,7 @@ def graph(chartID='chart_ID', chart_type='line', chart_height=500):
         title = {"text": 'Follower Counts Per Sentiment - ' + Topic1}
         xAxis = {"categories": ['Tweet 1', 'Tweet 2', 'Tweet 3', 'Tweet 4', 'Tweet 5']}
         yAxis = {"title": {"text": 'Followers'}}
+
         return render_template('endpoint.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis,
                                yAxis=yAxis, Topic1=Topic1, Topic2=Topic2, tweets=tweets,
                                ptweets=ptweets, ntweets=ntweets, neutweets=neutweets,
@@ -303,6 +303,35 @@ def graph(chartID='chart_ID', chart_type='line', chart_height=500):
                                neuTweetsFolList=neuTweetsFolList)
 
     elif len(pTweetsFolList) < 15 or len(nTweetsFolList) < 15:
+        chart = {"renderTo": chartID, "type": chart_type, "height": chart_height, }
+        series = [{"name": 'PtweetsFollowersCount', "data": [pTweetsFolList[0], pTweetsFolList[1], pTweetsFolList[2],
+                                                             pTweetsFolList[3], pTweetsFolList[4], pTweetsFolList[5],
+                                                             pTweetsFolList[6], pTweetsFolList[7], pTweetsFolList[8],
+                                                             pTweetsFolList[9]]},
+                  {"name": 'NtweetsFollowersCount', "data": [nTweetsFolList[0], nTweetsFolList[1], nTweetsFolList[2],
+                                                             nTweetsFolList[3], nTweetsFolList[4], nTweetsFolList[5],
+                                                             nTweetsFolList[6], nTweetsFolList[7], nTweetsFolList[8],
+                                                             nTweetsFolList[9]]},
+                  {"name": 'NeutweetsFollowersCount',
+                   "data": [neuTweetsFolList[0], neuTweetsFolList[1], neuTweetsFolList[2],
+                            neuTweetsFolList[3], neuTweetsFolList[4], neuTweetsFolList[5],
+                            neuTweetsFolList[6], neuTweetsFolList[7], neuTweetsFolList[8],
+                            neuTweetsFolList[9]]}]
+        title = {"text": 'Follower Counts Per Sentiment - ' + Topic1}
+        xAxis = {"categories": ['Tweet 1', 'Tweet 2', 'Tweet 3', 'Tweet 4', 'Tweet 5', 'Tweet 6', 'Tweet 7', 'Tweet 8',
+                                'Tweet 9', 'Tweet 10', 'Tweet 11', 'Tweet 12', 'Tweet 13', 'Tweet 14', 'Tweet 15']}
+        yAxis = {"title": {"text": 'Followers'}}
+        return render_template('endpoint.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis,
+                               yAxis=yAxis, Topic1=Topic1, Topic2=Topic2, tweets=tweets,
+                               ptweets=ptweets, ntweets=ntweets, neutweets=neutweets,
+                               positive=positive, negative=negative, neutral=neutral,
+                               tweets2=tweets2,
+                               ptweets2=ptweets2, ntweets2=ntweets2, neutweets2=neutweets2,
+                               positive2=positive2, negative2=negative2, neutral2=neutral2,
+                               pTweetsFolList=pTweetsFolList, nTweetsFolList=nTweetsFolList,
+                               neuTweetsFolList=neuTweetsFolList)
+
+    elif len(pTweetsFolList) > 15 or len(nTweetsFolList) > 15:
         chart = {"renderTo": chartID, "type": chart_type, "height": chart_height, }
         series = [{"name": 'PtweetsFollowersCount', "data": [pTweetsFolList[0], pTweetsFolList[1], pTweetsFolList[2],
                                                              pTweetsFolList[3], pTweetsFolList[4], pTweetsFolList[5],
@@ -486,7 +515,7 @@ def avgPlot():
     x_pos = [i for i, _ in enumerate(x)]
 
     plt.bar(x_pos, averages, color='green')
-    plt.xlabel("Energy Source")
+    plt.xlabel(Topic1 + " " + Topic2)
     plt.ylabel("Followers (1 & 2), Retweets (3 & 4)")
     plt.title("Average number of followers and retweets")
 
