@@ -328,7 +328,7 @@ def graph(chartID='chart_ID', chart_type='line', chart_height=500):
                                pTweetsFolList=pTweetsFolList, nTweetsFolList=nTweetsFolList,
                                neuTweetsFolList=neuTweetsFolList)
 
-    elif len(pTweetsFolList) > 15 or len(nTweetsFolList) > 15:
+    else:
         chart = {"renderTo": chartID, "type": chart_type, "height": chart_height, }
         series = [{"name": 'PtweetsFollowersCount', "data": [pTweetsFolList[0], pTweetsFolList[1], pTweetsFolList[2],
                                                              pTweetsFolList[3], pTweetsFolList[4], pTweetsFolList[5],
